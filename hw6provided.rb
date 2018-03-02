@@ -3,7 +3,6 @@
 
 require_relative './hw6graphics'
 
-
 # class responsible for the pieces and their movements
 class Piece 
   
