@@ -13,6 +13,11 @@ def runMyTetris
   mainLoop
 end
 
+def runChallengeTetris
+  MyTetrisChallenge.new
+  mainLoop
+end
+
 if ARGV.count == 0
   runMyTetris
 elsif ARGV.count != 1
@@ -21,6 +26,8 @@ elsif ARGV[0] == "enhanced"
   runMyTetris
 elsif ARGV[0] == "original"
   runTetris
+elsif ARGV[0] == "challenge"
+  runChallengeTetris
 else
   puts "usage: hw6runner.rb [enhanced | original]"
 end

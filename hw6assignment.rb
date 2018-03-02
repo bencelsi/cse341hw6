@@ -2,10 +2,10 @@
 
 class MyPiece < Piece
 	All_My_Pieces = All_Pieces.push(
-		rotations([[0,0],[-1,0],[-1,1],[0,1],[1,0]]), # thumbs up
-		[[[0,0],[-1,0],[1,0],[2,0],[-2,0]], # longer long
-		[[0,0],[0,-1],[0,1],[0,2],[0,-2]]],       
-		rotations([[0,0],[1,0],[0,1]]))   	#elbow 
+		rotations([[0,0],[-1,0],[-1,1],[0,1],[1,1]]), # thumbs up
+		#[[[0,0],[-1,0],[1,0],[2,0],[-2,0]], # longer long
+		#[[0,0],[0,-1],[0,1],[0,2],[0,-2]]],       
+		rotations([[0,0],[-1,0],[0,1]]))   	#elbow 
 
 	def initialize(point_array, board)
 		super(point_array, board)
@@ -54,15 +54,14 @@ class MyBoard < Board
 	end
 	
 	def cheat
-		if @score > 10 and !@cheating
-			@score -= 10
+		if @score > 100 and !@cheating
+			@score -= 100
 			@cheating = true
 		end
 	end
 end
 
 class MyTetris < Tetris
-
 	def set_board
 		@canvas = TetrisCanvas.new
 		@board = MyBoard.new(self)
@@ -77,3 +76,21 @@ class MyTetris < Tetris
 		@root.bind('c', proc {@board.cheat}) 		
 	end
 end
+
+#########################
+       #CHALLENGE#
+#########################
+
+class MyTetrisChallenge < MyTetris
+	
+end
+
+class MyPieceChallenge < MyTetris
+	
+end
+
+class MyBoardChallenge < MyTetris
+	
+end
+
+
