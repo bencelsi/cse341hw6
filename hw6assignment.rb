@@ -1,20 +1,15 @@
 # University of Washington, Programming Languages, Homework 6, hw6runner.rb
 
 class MyPiece < Piece
-	All_My_Pieces = All_Pieces.push(
-		rotations([[0,0],[-1,0],[-1,1],[0,1],[1,1]]), # thumbs up
-		#[[[0,0],[-1,0],[1,0],[2,0],[-2,0]], # longer long
-		#[[0,0],[0,-1],[0,1],[0,2],[0,-2]]],       
-		rotations([[0,0],[-1,0],[0,1]]))   	#elbow 
-
-	def initialize(point_array, board)
-		super(point_array, board)
-	end
+	All_My_Pieces = All_Pieces +
+		[rotations([[0,0],[-1,0],[-1,1],[0,1],[1,1]]), # thumbs up
+		[[[0,0],[-1,0],[1,0],[2,0],[-2,0]],           # longer long
+		[[0,0],[0,-1],[0,1],[0,2],[0,-2]]],
+		rotations([[0,0],[-1,0],[0,1]])]   		  #elbow 
 	
 	def self.next_piece (board)
 		MyPiece.new(All_My_Pieces.sample, board)
 	end
-	
 end
 	
 class MyBoard < Board
@@ -78,18 +73,60 @@ class MyTetris < Tetris
 end
 
 #########################
+#########################
        #CHALLENGE#
+#########################
 #########################
 
 class MyTetrisChallenge < MyTetris
+	def set_board
+		@canvas = TetrisCanvas.new
+		@board = MyBoardChallenge.new(self)
+		@canvas.place(@board.block_size * @board.num_rows + 3,
+        @board.block_size * @board.num_columns + 6, 24, 80)
+		@board.draw 
+	end								
+end
+
+class MyPieceChallenge < MyPiece
+	All_My_Pieces_Challenge = [
+		rotations([[0,0],[-1,0],[-1,1],[0,1],[1,0]]), 	# temple island
+		rotations([[-2, 1], [-1, 1], [0, 1], [1, 1],	# jungle island
+		[-2,0],[-1,0],[0,0],[1,0],[-1,-1],[0,-1],[1,-1]]),
+		rotations([[0, 0], [0, 1], [1, 0], [1, 1]]), 	# boiler island
+		rotations([[0, 0], [0, -1], [0, 1], [1, 1]]), 	# survey island 
+		[[0,0]]]										# prison island
+	 
+	All_Colors_Challenge = ['Green', 'Red', 'Purple', 'Blue', 'Orange']
+	
+	def initialize (point_array, board)
+		super(point_array, board)
+		@color = All_Colors_Challenge.sample
+	end
+	
+	def self.next_piece (board)
+		MyPieceChallenge.new(All_My_Pieces_Challenge.sample, board)
+	end
+	
 	
 end
 
-class MyPieceChallenge < MyTetris
+class MyBoardChallenge < MyBoard
 	
-end
-
-class MyBoardChallenge < MyTetris
+	def initialize (game)
+		super(game)
+		@piece_number = rand(5)
+		@current_block = MyPieceChallenge.next_piece(self)
+	end
+	
+	
+	def next_piece
+		super()
+		if !@cheating
+			@current_block = MyPieceChallenge.next_piece(self)
+		end
+#		@current_pos = nil
+	end
 	
 end
 
