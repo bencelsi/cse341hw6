@@ -85,30 +85,39 @@ class MyTetrisChallenge < MyTetris
 		@canvas.place(@board.block_size * @board.num_rows + 3,
         @board.block_size * @board.num_columns + 6, 24, 80)
 		@board.draw 
-	end								
+	end
+	
+	def buttons
+		super
+		@score.text(@board.score.to_s(25))
+		@score.place(35, 50, 126, 45)    
+	end
+
+	def update_score
+		@score.text(@board.score.to_s(25))
+	end
 end
 
 class MyPieceChallenge < MyPiece
 	All_My_Pieces_Challenge = [
-		rotations([[0,0],[-1,0],[-1,1],[0,1],[1,0]]), 	# temple island
-		rotations([[-2, 1], [-1, 1], [0, 1], [1, 1],	# jungle island
-		[-2,0],[-1,0],[0,0],[1,0],[-1,-1],[0,-1],[1,-1]]),
 		rotations([[0, 0], [0, 1], [1, 0], [1, 1]]), 	# boiler island
-		rotations([[0, 0], [0, -1], [0, 1], [1, 1]]), 	# survey island 
-		[[0,0]]]										# prison island
-	 
-	All_Colors_Challenge = ['Green', 'Red', 'Purple', 'Blue', 'Orange']
-	
-	def initialize (point_array, board)
-		super(point_array, board)
-		@color = All_Colors_Challenge.sample
+		rotations([[0,0],[-1,0],[-1,1],[0,1],[1,1]]), 	# temple island
+		rotations([[0, 0], [0, -1], [0, 1], [1, 1]]), 	# survey island
+		rotations([[-2, -1], [-1, 1], [0, 1], [1, 1],	# jungle island
+		[-2,0],[-1,0],[0,0],[1,0],[-1,-1],[0,-1],[1,-1]]),
+		[[[0,0]]]]										# prison island
+
+	All_Colors_Challenge = ['Purple', 'Green', 'Orange', 'Red', 'Blue']
+
+	def initialize (number, board)
+		super(All_My_Pieces_Challenge[number], board)
+		@color = All_Colors_Challenge[number]
 	end
 	
 	def self.next_piece (board)
-		MyPieceChallenge.new(All_My_Pieces_Challenge.sample, board)
+		MyPieceChallenge.new(rand(5), board)
 	end
-	
-	
+
 end
 
 class MyBoardChallenge < MyBoard
@@ -119,15 +128,14 @@ class MyBoardChallenge < MyBoard
 		@current_block = MyPieceChallenge.next_piece(self)
 	end
 	
-	
 	def next_piece
-		super()
-		if !@cheating
-			@current_block = MyPieceChallenge.next_piece(self)
-		end
-#		@current_pos = nil
+		super
+		@current_block = MyPieceChallenge.next_piece(self)
 	end
 	
+	def cheat
+		print "no cheating!"
+	end
 end
 
 
